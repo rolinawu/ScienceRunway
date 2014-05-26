@@ -8,69 +8,129 @@ from flask import render_template
 from flask import jsonify
 from flask import url_for
 from flask import request
-
+from survey import *
 
 app = Flask(__name__)
 
 #f = open("static/data.tsv", 'r')
 
-
+links, links_rev = load_mentor_names("mentors_links.csv")
+mentors = load_mentor_answers("mentors_quiz.csv")
+questions = load_questions("questions.csv")
+profiles = load_mentor_profiles("mentor_profiles.txt")
+#print mentors
+#print questions
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
-
-@app.route('/survey', methods=['POST'])
-def result():
-    search = request.args.getlist('search')[0].decode('utf-8')
-
-    return render_template('finitescroll.html', query=search, totalresults = total, searchJSON=idGroups, searchJSON2=[idGroupsHash])
-
-@app.route('/result2', methods=['GET', 'POST'])
-def result2():
-    recipeids = request.form.getlist('links[]')
-
-    return render_template('variations.html', query=search, totalresults = total, searchJSON=searchjsonObject, searchJSON2=searchjsonObject2)
-
-@app.route('/recipes', methods=['GET', 'POST'])
-def recipes():
-    links = request.form.getlist('links[]')
-
-    return render_template('test.html', links = links)
-
-@app.route('/search')
-def search():
-    return render_template('search.html')
-
-
-@app.route('/howitworks')
-def howitworks():
-    return render_template('howitworks.html')
-
-@app.route('/data')
-def data():
-    return render_template('analysis.html')
+@app.route('/about')
+def about():
+    return render_template('about.html')
 
 @app.route('/contact')
 def contact():
-    return render_template('about.html')
-    
-@app.route('/api')
-def api():
-    recommendation = {'band':'radiohead', 'album':'Ok Computer'}
-    return jsonify(recommendation)
+    return render_template('contact.html')
+
+@app.route('/gallery')
+def gallery():
+    return render_template('gallery.html', images = links.keys())
+
+@app.route('/quiz', methods=['GET','POST'])
+def survey():
+    return render_template('survey.html', questions = questions)
+
+@app.route('/result', methods=['GET', 'POST'])
+def result():
+    q1 = request.args
+    name = q1['name']
+    if name=='Your name' or name=='':
+        name = ''
+    else:
+        name = " " + name
+
+    print q1.keys()
+    answer = []
+    #assume that all questions have been answered; in future will have to add check to html to block incomplete answers
+    for i in range(len(questions)):
+        answer.append(q1["Q" + str(i + 1)])
+    match = get_mentor_match(answer, mentors)
+#    q1 = request.args.getlist('Q1').decode('utf-8')
+    print answer
+    print match
+    return render_template("profile.html", message1 = "Congratulations%s!"%name, message2 = "Your mentor is: ", name = links[match], key = match, profile = profiles[match])
 
 
-@app.route('/broken')
-def broken():
-    var = does_not_exist
-    return jsonify(recommendation)
+@app.route('/annlindsay')
+def annlindsay():
+    key = 'annlindsay'
+    return render_template('profile.html', name = links[key], key = key, profile = profiles[key])
 
+@app.route('/lisacooney')
+def lisacooney():
+    key = 'lisacooney'
+    return render_template('profile.html', name = links[key], key = key, profile = profiles[key])
 
-@app.route('/bootstrap')
-def bootstrap():
-    return render_template('bootstrap.html')
+@app.route('/yolandabecker')
+def yolandabecker():
+    key = 'yolandabecker'
+    return render_template('profile.html', name = links[key], key = key, profile = profiles[key])
+
+@app.route('/lynnegordon')
+def lynnegordon():
+    key = 'lynnegordon'
+    return render_template('profile.html', name = links[key], key = key, profile = profiles[key])
+
+@app.route('/heidichumley')
+def heidichumley():
+    key = 'heidichumley'
+    return render_template('profile.html', name = links[key], key = key, profile = profiles[key])
+
+@app.route('/joannakelley')
+def joannekelly():
+    key = 'joannakelley'
+    return render_template('profile.html', name = links[key], key = key, profile = profiles[key])
+
+@app.route('/joycelee')
+def joycelee():
+    key = 'joycelee'
+    return render_template('profile.html', name = links[key], key = key, profile = profiles[key])
+
+@app.route('/reginaholliday')
+def reginaholliday():
+    key = 'reginaholliday'
+    return render_template('profile.html', name = links[key], key = key, profile = profiles[key])
+
+@app.route('/kimdu')
+def kimdu():
+    key = 'kimdu'
+    return render_template('profile.html', name = links[key], key = key, profile = profiles[key])
+
+@app.route('/romatretiak')
+def romatretiak():
+    key = 'romatretiak'
+    return render_template('profile.html', name = links[key], key = key, profile = profiles[key])
+
+@app.route('/melvacovington')
+def melvacovington():
+    key = 'melvacovington'
+    return render_template('profile.html', name = links[key], key = key, profile = profiles[key])
+
+@app.route('/kristinebordenave')
+def kristinebordenave():
+    key = 'kristinebordenave'
+    return render_template('profile.html', name = links[key], key = key, profile = profiles[key])
+
+@app.route('/ushasatish')
+def ushasatish():
+    key = 'ushasatish'
+    return render_template('profile.html', name = links[key], key = key, profile = profiles[key])
+
+@app.route('/sarahwamala')
+def sarahwamala():
+    key = 'sarahwamala'
+    return render_template('profile.html', name = links[key], key = key, profile = profiles[key])
 
 
 if __name__ == '__main__':
