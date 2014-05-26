@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import os
+import json
 
 from flask import Flask
 from flask import url_for
@@ -8,18 +9,19 @@ from flask import render_template
 from flask import jsonify
 from flask import url_for
 from flask import request
-from survey import *
+from survey import * 
 
 app = Flask(__name__)
-
+MAILING_LIST = "mailing_list.txt"
+SURVEY_RESULTS = "survey_results.txt"
 #f = open("static/data.tsv", 'r')
 
 links, links_rev = load_mentor_names("mentors_links.csv")
 mentors = load_mentor_answers("mentors_quiz.csv")
 questions = load_questions("questions.csv")
 profiles = load_mentor_profiles("mentor_profiles.txt")
-#print mentors
-#print questions
+print mentors
+print questions
 
 @app.route('/')
 def index():
@@ -33,6 +35,14 @@ def about():
 def contact():
     return render_template('contact.html')
 
+@app.route('/mailing', methods=['GET','POST'])
+def mailing():
+    q1 = request.args
+    email = q1['comments']
+    if email!='':
+        write_log_file(MAILING_LIST, email)
+    return render_template('thanks.html')
+
 @app.route('/gallery')
 def gallery():
     return render_template('gallery.html', images = links.keys())
@@ -44,21 +54,24 @@ def survey():
 @app.route('/result', methods=['GET', 'POST'])
 def result():
     q1 = request.args
+    print q1
     name = q1['name']
     if name=='Your name' or name=='':
         name = ''
     else:
         name = " " + name
 
-    print q1.keys()
     answer = []
     #assume that all questions have been answered; in future will have to add check to html to block incomplete answers
     for i in range(len(questions)):
-        answer.append(q1["Q" + str(i + 1)])
+        question_key = "Q" + str(i + 1)
+        if question_key in q1.keys():
+            answer.append(q1[question_key])
+        else:
+            answer.append("")
     match = get_mentor_match(answer, mentors)
 #    q1 = request.args.getlist('Q1').decode('utf-8')
-    print answer
-    print match
+    write_log_file(SURVEY_RESULTS, json.dumps(q1) + "\tMATCHED TO: %s"% match)
     return render_template("profile.html", message1 = "Congratulations%s!"%name, message2 = "Your mentor is: ", name = links[match], key = match, profile = profiles[match])
 
 
@@ -131,6 +144,8 @@ def ushasatish():
 def sarahwamala():
     key = 'sarahwamala'
     return render_template('profile.html', name = links[key], key = key, profile = profiles[key])
+
+
 
 
 if __name__ == '__main__':
