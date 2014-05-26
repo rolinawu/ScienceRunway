@@ -20,8 +20,8 @@ links, links_rev = load_mentor_names("mentors_links.csv")
 mentors = load_mentor_answers("mentors_quiz.csv")
 questions = load_questions("questions.csv")
 profiles = load_mentor_profiles("mentor_profiles.txt")
-print mentors
-print questions
+#print mentors
+#print questions
 
 @app.route('/')
 def index():
@@ -54,7 +54,6 @@ def survey():
 @app.route('/result', methods=['GET', 'POST'])
 def result():
     q1 = request.args
-    print q1
     name = q1['name']
     if name=='Your name' or name=='':
         name = ''

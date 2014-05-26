@@ -4,13 +4,10 @@ import random
 import datetime
 
 def _match_score(my_answer, mentor_answer):
-	print my_answer
-	print mentor_answer
 	matches = 0
 	for (a,b) in zip(my_answer, mentor_answer):
 	    if a==b:
 	        matches +=1
-	print "Score: %d"%matches
 	return matches
 
 def dummy_match(my_answer):
@@ -22,7 +19,6 @@ def get_mentor_match(my_answer, mentors):
     best_mentor = random.choice(mentors.keys()) #if no match to any mentors, randomly select one
     for k in mentors.keys():
         #for each mentor, find score
-        print "Mentor: %s"%k
         score = _match_score(my_answer,mentors[k])
         if score > best_score:
             best_score = score
