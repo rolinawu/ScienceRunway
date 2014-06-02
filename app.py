@@ -16,12 +16,16 @@ MAILING_LIST = "mailing_list.txt"
 SURVEY_RESULTS = "survey_results.txt"
 #f = open("static/data.tsv", 'r')
 
-links, links_rev = load_mentor_names("mentors_links.csv")
-mentors = load_mentor_answers("mentors_quiz.csv")
-questions = load_questions("questions.csv")
-profiles = load_mentor_profiles("mentor_profiles.txt")
+#links, links_rev = load_mentor_names("mentors_links.csv")
+links, links_rev = load_mentor_names("mentor_links_final.csv")
+#mentors = load_mentor_answers("mentors_quiz.csv")
+mentors = load_mentor_answers("mentor_answers.csv")
+#questions = load_questions("questions.csv")
+questions = load_questions("questions_final.csv")
+#profiles = load_mentor_profiles("mentor_profiles.txt")
+profiles = load_mentor_profiles("mentor_profilesfinalv2.csv", "mentor_profilesfinalv3.csv", csv_file = True)
 #print mentors
-#print questions
+
 
 @app.route('/')
 def index():
@@ -45,7 +49,9 @@ def mailing():
 
 @app.route('/gallery')
 def gallery():
-    return render_template('gallery.html', images = links.keys())
+    mk = links.keys()
+#    random.shuffle(mk)
+    return render_template('gallery.html', images = mk, profiles = profiles)
 
 @app.route('/quiz', methods=['GET','POST'])
 def survey():
@@ -74,76 +80,12 @@ def result():
     return render_template("profile.html", message1 = "Congratulations%s!"%name, message2 = "Your mentor is: ", name = links[match], key = match, profile = profiles[match])
 
 
-@app.route('/annlindsay')
-def annlindsay():
-    key = 'annlindsay'
+@app.route('/profile', methods=['GET'])
+def profile():
+    q1 = request.args
+    key = q1['key']
+    print profiles[key]
     return render_template('profile.html', name = links[key], key = key, profile = profiles[key])
-
-@app.route('/lisacooney')
-def lisacooney():
-    key = 'lisacooney'
-    return render_template('profile.html', name = links[key], key = key, profile = profiles[key])
-
-@app.route('/yolandabecker')
-def yolandabecker():
-    key = 'yolandabecker'
-    return render_template('profile.html', name = links[key], key = key, profile = profiles[key])
-
-@app.route('/lynnegordon')
-def lynnegordon():
-    key = 'lynnegordon'
-    return render_template('profile.html', name = links[key], key = key, profile = profiles[key])
-
-@app.route('/heidichumley')
-def heidichumley():
-    key = 'heidichumley'
-    return render_template('profile.html', name = links[key], key = key, profile = profiles[key])
-
-@app.route('/joannakelley')
-def joannekelly():
-    key = 'joannakelley'
-    return render_template('profile.html', name = links[key], key = key, profile = profiles[key])
-
-@app.route('/joycelee')
-def joycelee():
-    key = 'joycelee'
-    return render_template('profile.html', name = links[key], key = key, profile = profiles[key])
-
-@app.route('/reginaholliday')
-def reginaholliday():
-    key = 'reginaholliday'
-    return render_template('profile.html', name = links[key], key = key, profile = profiles[key])
-
-@app.route('/kimdu')
-def kimdu():
-    key = 'kimdu'
-    return render_template('profile.html', name = links[key], key = key, profile = profiles[key])
-
-@app.route('/romatretiak')
-def romatretiak():
-    key = 'romatretiak'
-    return render_template('profile.html', name = links[key], key = key, profile = profiles[key])
-
-@app.route('/melvacovington')
-def melvacovington():
-    key = 'melvacovington'
-    return render_template('profile.html', name = links[key], key = key, profile = profiles[key])
-
-@app.route('/kristinebordenave')
-def kristinebordenave():
-    key = 'kristinebordenave'
-    return render_template('profile.html', name = links[key], key = key, profile = profiles[key])
-
-@app.route('/ushasatish')
-def ushasatish():
-    key = 'ushasatish'
-    return render_template('profile.html', name = links[key], key = key, profile = profiles[key])
-
-@app.route('/sarahwamala')
-def sarahwamala():
-    key = 'sarahwamala'
-    return render_template('profile.html', name = links[key], key = key, profile = profiles[key])
-
 
 
 

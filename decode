@@ -1,0 +1,6 @@
+
+f = open("static/mentor_profiles_final.csv")
+lines = f.read().split("\r")
+for l in lines:
+	l.decode('utf-8')
+	print l

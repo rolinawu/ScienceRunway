@@ -49,7 +49,7 @@
             <li><a href="quiz">Get Matched!</a></li>
             <li><a href="about">About</a></li>
             <li><a href="contact">Contact</a></li>
-            <li><a href="gallery">Mentors</a></li>
+            <li><a href="gallery">Role Models</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -68,22 +68,29 @@
         </div>
         <div class="row marketing">
           <div class="col-lg-8">
-            <h4>{{profile[0][0]}}</h4>
-            <p><b>{{name}}: </b> {{profile[0][1]}}</p>
+            <h4>{{profile[1][0]}}</h4>
+            <p><b>{{name}}: </b> {{profile[1][1]}}</p>
           </div>
         </div>
       </div>
       {% set index = 0 %}
       {% for q in profile %}
-          <div class="row marketing">
+        {% if index > 1 %}
             <div class="col-lg-12">
-              <h4>{{q[0]}}</h4>
+              <i><h4>{{q[0]}}</h4></i>
               <p><b>{{name}}: </b>{{q[1]}}</p>
             </div>
-        </div>
+        {% endif %}
         {% set index = index + 1 %}      
       {% endfor %}
-
+        <div class="row marketing">
+          </div>
+        <div class="row marketing">
+          <div class="col-lg-12">
+            <i><h4>About {{name}}</h4>
+            <p>{{profile[0][1]}}</p></i>
+          </div>
+        </div>
       <!-- FOOTER -->
 
       <footer>

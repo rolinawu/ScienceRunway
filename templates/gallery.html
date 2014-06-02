@@ -48,7 +48,7 @@
             <li><a href="quiz">Get Matched!</a></li>
             <li><a href="about">About</a></li>
             <li><a href="contact">Contact</a></li>
-            <li class="active"><a href="gallery">Mentors</a></li>
+            <li class="active"><a href="gallery">Role Models</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -57,12 +57,12 @@
     
     <!-- Begin page content -->
     <div class="container">
-      <h2 class="featurette-heading">The Mentors</h2><br>
+      <h2 class="featurette-heading">The Role Models</h2><br>
 
       <div class="row">
       {% for p in images %}
         <div class="col-xs-6 col-md-3">
-          <a href="{{p}}" class="thumbnail">
+          <a href="profile?key={{p}}" class="thumbnail">
             <img data-src="holder.js/100%x180" src = "static/{{p}}.jpg">
           </a>
         </div>

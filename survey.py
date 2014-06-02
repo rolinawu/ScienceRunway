@@ -34,20 +34,69 @@ def load_mentor_answers(filename):
         mentors[row[0]] = row[1:]
     return mentors
 
-def load_mentor_profiles(filename):
+def load_mentor_profiles(filename, backupfile, csv_file=True):
+
     mentors = {}
-    f = open("static/"+filename)
-    lines = f.read().split("\r")
-    header = lines[0].split('\t')
-    for line in lines[1:]:
-        row = line.split('\t')
-        name = row[0]
-        answers = []
-        for e in range(1,len(header)):
-            if row[e] != 'pass' and row[e] != 'PASS' and row[e]!='':
-                answers.append([header[e],row[e]])
-        mentors[name] = answers
-    return mentors
+    if csv_file:
+        f = open("static/" + filename, 'rU')
+        fc = csv.reader(f)
+        count = 0
+        header = []
+        for row in fc:
+            if len(row)==0:
+                continue
+            row_stripped = [c.strip() for c in row]
+            if count==0:
+                header = row_stripped                
+            else:
+                try:
+                    row_stripped = [c.decode('utf-8') for c in row_stripped]
+                    name = row_stripped[0]
+                    answers = []
+                    for e in range(1,len(header)):
+                        if row_stripped[e] != 'pass' and row_stripped[e] != 'PASS' and row_stripped[e]!='':
+                            answers.append([header[e],row_stripped[e]])
+                    mentors[name] = answers
+                except:
+                    print row_stripped
+            count+=1
+        f = open("static/" + filename, 'rU')
+        fc = csv.reader(f)
+        count = 0
+        header = []
+        for row in fc:
+            if len(row)==0:
+                continue
+            row_stripped = [c.strip() for c in row]
+            if count==0:
+                header = row_stripped                
+            else:
+                try:
+                    row_stripped = [c.decode('utf-8') for c in row_stripped]
+                    name = row_stripped[0]
+                    answers = []
+                    for e in range(1,len(header)):
+                        if row_stripped[e] != 'pass' and row_stripped[e] != 'PASS' and row_stripped[e]!='':
+                            answers.append([header[e],row_stripped[e]])
+                    if name not in mentors.keys():
+                        mentors[name] = answers
+                except:
+                    print row_stripped
+            count+=1
+        return mentors
+    else:
+        f = open("static/"+filename)
+        lines = f.read().split("\r")
+        header = lines[0].split('\t')
+        for line in lines[1:]:
+            row = line.split('\t')
+            name = row[0]
+            answers = []
+            for e in range(1,len(header)):
+                if row[e] != 'pass' and row[e] != 'PASS' and row[e]!='':
+                    answers.append([header[e],row[e]])
+            mentors[name] = answers
+        return mentors
 
 def _load_questions(filename):
     questions = {}
