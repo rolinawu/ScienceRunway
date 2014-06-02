@@ -11,6 +11,10 @@ from flask import url_for
 from flask import request
 from survey import * 
 
+host_set = '54.200.171.124'
+host_set = '0.0.0.0'
+port_set = 8080
+
 app = Flask(__name__)
 MAILING_LIST = "mailing_list.txt"
 SURVEY_RESULTS = "survey_results.txt"
@@ -90,10 +94,10 @@ def profile():
 
 
 if __name__ == '__main__':
-    # Bind to PORT if defined, otherwise default to 5000.
+    # Bind to PORT if defined, otherwise default to 5000.                                                               
     port = int(os.environ.get('PORT', 5000))
     app.debug = True
-    app.run(host='0.0.0.0',port=8080)
-#      app.run(host='192.168.1.28', port=8000)
+    app.run(host=host_set,port=port_set)
+#      app.run(host='192.168.1.28', port=8000)                                                                          
 
     
