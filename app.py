@@ -11,8 +11,8 @@ from flask import url_for
 from flask import request
 from survey import * 
 
-host_set = '54.200.171.124'
-#host_set = '0.0.0.0'
+#host_set = '54.200.171.124'
+host_set = '0.0.0.0'
 port_set = 8080
 
 app = Flask(__name__)
