@@ -54,7 +54,7 @@ def mailing():
 @app.route('/gallery')
 def gallery():
     mk = links.keys()
-#    random.shuffle(mk)
+    random.shuffle(mk)
     return render_template('gallery.html', images = mk, profiles = profiles)
 
 @app.route('/quiz', methods=['GET','POST'])
