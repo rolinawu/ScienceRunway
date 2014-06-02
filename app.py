@@ -12,7 +12,7 @@ from flask import request
 from survey import * 
 
 host_set = '54.200.171.124'
-host_set = '0.0.0.0'
+#host_set = '0.0.0.0'
 port_set = 8080
 
 app = Flask(__name__)
@@ -55,7 +55,7 @@ def mailing():
 def gallery():
     mk = links.keys()
     random.shuffle(mk)
-    return render_template('gallery.html', images = mk, profiles = profiles)
+    return render_template('gallery.html', images = mk[:16], profiles = profiles)
 
 @app.route('/quiz', methods=['GET','POST'])
 def survey():
